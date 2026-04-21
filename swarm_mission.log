@@ -1,0 +1,60 @@
+19:42:14  WARNING   ⚠  --skip-prearm active: pre-arm checks will be bypassed
+19:42:14  INFO      ══════════════════════════════════════════════════════════════
+19:42:14  INFO      STEP 1 — Generating missions (main_2_.py) …
+19:42:14  INFO      ══════════════════════════════════════════════════════════════
+19:42:15  INFO      Mission planner finished ✓
+19:42:15  INFO      ══════════════════════════════════════════════════════════════
+19:42:15  INFO      STEP 2 — Loading waypoint files …
+19:42:15  INFO      ══════════════════════════════════════════════════════════════
+19:42:15  INFO        D1: 6 waypoints  ← missions/drone_1.waypoints
+19:42:15  INFO        D2: 6 waypoints  ← missions/drone_2.waypoints
+19:42:15  INFO      ══════════════════════════════════════════════════════════════
+19:42:15  INFO      STEP 3 — Configuring swarm …
+19:42:15  INFO      ══════════════════════════════════════════════════════════════
+19:42:15  INFO        D1  sysid=1  udpin:127.0.0.1:14550  (6 WPs)
+19:42:15  INFO        D2  sysid=2  udpin:127.0.0.1:14560  (6 WPs)
+19:42:15  INFO      ══════════════════════════════════════════════════════════════
+19:42:15  INFO      STEP 4 — Launching 2 drone thread(s)  DRONE_DELAY=60.0s  ALT=6.0m
+19:42:15  INFO      ══════════════════════════════════════════════════════════════
+19:42:15  INFO      [D1|sys=1] Connecting → udpin:127.0.0.1:14550
+19:42:15  INFO          Waiting for HEARTBEAT …
+19:42:15  INFO          HEARTBEAT ✓  sysid=1  compid=0
+19:42:15  INFO      [D1|sys=1] Connected ✓
+19:42:15  INFO      [D2|sys=2] Connecting → udpin:127.0.0.1:14560
+19:42:15  INFO          Waiting for HEARTBEAT …
+19:42:16  INFO          HEARTBEAT ✓  sysid=2  compid=0
+19:42:16  INFO      [D2|sys=2] Connected ✓
+19:42:16  INFO      [D1|sys=1] Mission uploaded ✓  (6 WPs)
+19:42:16  WARNING   [D1|sys=1] Pre-arm checks SKIPPED (--skip-prearm)
+19:42:16  INFO      [D1|sys=1] Arming …
+19:42:17  INFO      [D1|sys=1] Armed ✓
+19:42:17  INFO      [D1|sys=1] Taking off to 6.0m …
+19:42:17  INFO      [D2|sys=2] Mission uploaded ✓  (6 WPs)
+19:42:17  INFO      [D2|sys=2] Waiting 60s (staggered takeoff) …
+19:42:24  INFO      [D1|sys=1] Reached 5.5m ✓
+19:42:24  INFO      [D1|sys=1] AUTO mission started
+19:42:24  INFO      [D1|sys=1] Transit phase: heading to lawnmower start …
+19:42:34  INFO      [D1|sys=1] Lawnmower start reached — transit done ✓
+19:42:34  INFO      [D1|sys=1] Coverage phase — waiting for mission end …
+19:43:03  INFO      [D1|sys=1] Last waypoint reached ✓
+19:43:03  INFO      [D1|sys=1] Landing …
+19:43:16  INFO      [D1|sys=1] Landed ✓  alt=0.16m
+19:43:16  INFO      [D1|sys=1] Done — connection closed
+19:43:17  WARNING   [D2|sys=2] Pre-arm checks SKIPPED (--skip-prearm)
+19:43:18  INFO      [D2|sys=2] Arming …
+19:43:19  INFO      [D2|sys=2] Armed ✓
+19:43:19  INFO      [D2|sys=2] Taking off to 6.0m …
+19:43:26  INFO      [D2|sys=2] Reached 5.5m ✓
+19:43:26  INFO      [D2|sys=2] AUTO mission started
+19:43:26  INFO      [D2|sys=2] Transit phase: heading to lawnmower start …
+19:43:36  INFO      [D2|sys=2] Lawnmower start reached — transit done ✓
+19:43:36  INFO      [D2|sys=2] Coverage phase — waiting for mission end …
+19:58:26  WARNING   [D2|sys=2] Mission timeout — forcing land
+19:58:26  INFO      [D2|sys=2] Landing …
+19:58:39  INFO      [D2|sys=2] Landed ✓  alt=0.21m
+19:58:39  INFO      [D2|sys=2] Done — connection closed
+19:58:39  INFO      ══════════════════════════════════════════════════════════════
+19:58:39  INFO      SWARM COMPLETE
+19:58:39  INFO      ══════════════════════════════════════════════════════════════
+19:58:39  INFO        D1  ✓  OK
+19:58:39  INFO        D2  ✓  OK
