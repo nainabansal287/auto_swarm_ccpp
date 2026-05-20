@@ -36,8 +36,9 @@ POLL_HZ = 4
 #Drone connection strings
 DRONES: List[Tuple[int, str, int]] = [
     # (1-based index,  conn_str, sysid)
-    (1,  'udpin:127.0.0.1:14550',  1),
-    (2,  'udpin:127.0.0.1:14560',  2),
+    (1,  'udpin:0.0.0.1:14560',  1),
+    (2,  'udpin:0.0.0.1:14570',  2),
+    (3,  'udpin:0.0.0.0:14580',  3),
     ]
 
 
@@ -488,10 +489,10 @@ def drone_thread(state: DroneState, all_states: List[DroneState],gps_barrier: th
     
 
     # ── 7. Takeoff ───────────────────────────────────────────────────────────
-    log.info(f"{tag} Taking off to {TAKEOFF_ALT}m …")
+    log.info(f"{tag} Taking off to {TAKEOFF_ALT + state.index -1}m …")
     send_command_long(
         mav, mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,
-        p7=TAKEOFF_ALT,
+        p7=TAKEOFF_ALT + state.index -1,
     )
 
     t0 = time.time()
@@ -499,7 +500,7 @@ def drone_thread(state: DroneState, all_states: List[DroneState],gps_barrier: th
         pos = get_gps(mav, timeout=2)
         if pos:
             state.set_pos(*pos)
-            if pos[2] >= TAKEOFF_ALT * 0.92:
+            if pos[2] >= (TAKEOFF_ALT + state.index-1) * 0.95:
                 log.info(f"{tag} Reached {pos[2]:.1f}m !")
                 break
         time.sleep(1.0 / POLL_HZ)
