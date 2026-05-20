@@ -346,7 +346,7 @@ def plot_mission(cells, paths, infos, times, fence, rlat, rlon, alt_plans, save_
     foot = (f'\n{"─"*61}\n  Max: {max(tots):.1f}s ({max(tots)/60:.1f}min)\n'
             f'  Min: {min(tots):.1f}s ({min(tots)/60:.1f}min)\n'
             f'  Dev: {max(tots)-min(tots):.1f}s ({(max(tots)-min(tots))/np.mean(tots)*100:.1f}%)\n'
-            f'\n  Speed: {CRUISE_SPEED} m/s | Alt: {ALTITUDE}m\n'
+            f'\n  Speed: {CRUISE_SPEED} m/s | Alt(of 1st drone): {ALTITUDE}m\n'
             f'  HFOV: {HFOV}° | Buffer: {BUFFER_WIDTH}m\n'
             f'  Area: {fence.area:.0f}m² ({fence.area/10000:.2f}ha)\n') if tots else ''
     ax2.text(0, 1, hdr+body+foot, transform=ax2.transAxes, fontsize=9,
@@ -382,10 +382,10 @@ def export_missions(missions, out_dir):
             f.write('QGC WPL 110\n')
             f.write(f'0\t1\t0\t16\t0.000000\t0.000000\t0.000000\t0.000000\t'
                     f'{LAUNCH_LATLON[0]:.6f}\t{LAUNCH_LATLON[1]:.6f}\t'
-                    f'{ALTITUDE:.6f}\t1\n')
+                    f'{ALTITUDE + (i):.6f}\t1\n')
             for j, (lat, lon, alt) in enumerate(m):
                 f.write(f'{j+1}\t0\t3\t16\t0.000000\t0.000000\t0.000000\t0.000000\t'
-                        f'{lat:.6f}\t{lon:.6f}\t{alt:.6f}\t1\n')
+                        f'{lat:.6f}\t{lon:.6f}\t{alt + (i):.6f}\t1\n')
         a0, a1 = m[0][2], m[-1][2]
         alt_s = f'{a0:.0f}→{a1:.0f}m' if a0 != a1 else f'{a1:.0f}m'
         print(f'    {fp}  ({len(m)} wps, alt={alt_s})')
