@@ -20,11 +20,10 @@ from shapely.geometry import Polygon, MultiPolygon, LineString, Point
 from shapely import affinity
 
 
-filepath = "test.txt"
+filepath = "oldtest.txt"
 
-N_DRONES       = 2
+N_DRONES       = 3
 ALTITUDE       = 6.0
-ALT_SEPARATION = 5.0
 HFOV           = 87.0
 BUFFER_WIDTH   = 2.0
 CRUISE_SPEED   = 2.0
@@ -232,7 +231,7 @@ def balance(seeds, fence, rlat, rlon, spacing, buf, iters=80, tol=0.03):
             if cells[i].is_empty or cells[i].area < 1:
                 ok = False; paths.append([]); continue
             if cells[i].area < MIN_CELL_AREA:
-                print(f"  WARNING: Cell {i+1} area ({cells[i].area:.1f}m²) is too small for lawnmower paths (min {MIN_CELL_AREA:.1f}m²); skipping.")
+                print(f"  WARNING: Cell {i+1} area ({cells[i].area:.1f}m^2) is too small for lawnmower paths (min {MIN_CELL_AREA:.1f}m^2); skipping.")
                 ok = False; paths.append([]); continue
             paths.append(generate_lawnmower(cells[i], spacing, buf, rlat, rlon))
         if not ok: w *= 0.6; w -= w.mean(); continue
@@ -382,10 +381,10 @@ def export_missions(missions, out_dir):
             f.write('QGC WPL 110\n')
             f.write(f'0\t1\t0\t16\t0.000000\t0.000000\t0.000000\t0.000000\t'
                     f'{LAUNCH_LATLON[0]:.6f}\t{LAUNCH_LATLON[1]:.6f}\t'
-                    f'{ALTITUDE + (i):.6f}\t1\n')
+                    f'{ALTITUDE + (2*i):.6f}\t1\n')
             for j, (lat, lon, alt) in enumerate(m):
                 f.write(f'{j+1}\t0\t3\t16\t0.000000\t0.000000\t0.000000\t0.000000\t'
-                        f'{lat:.6f}\t{lon:.6f}\t{alt + (i):.6f}\t1\n')
+                        f'{lat:.6f}\t{lon:.6f}\t{alt + (2*i):.6f}\t1\n')
         a0, a1 = m[0][2], m[-1][2]
         alt_s = f'{a0:.0f}→{a1:.0f}m' if a0 != a1 else f'{a1:.0f}m'
         print(f'    {fp}  ({len(m)} wps, alt={alt_s})')
@@ -422,7 +421,7 @@ def main():
         fence = fence.buffer(0)
 
     spacing = 2 * ALTITUDE * math.tan(math.radians(HFOV / 2))
-    print(f'\n  Geofence: {fence.area:.0f}m²')
+    print(f'\n  Geofence: {fence.area:.0f}m')
     print(f'  Sweep spacing: {spacing:.1f}m')
 
     # Generate balanced Voronoi cells and lawnmower paths
@@ -452,7 +451,7 @@ def main():
     print(f'\n  {"─"*55}')
     for i in range(N_DRONES):
         info = infos[i]
-        print(f'  D{i+1}: {info["area"]:.0f}m² | {info["n_wp"]} wps | '
+        print(f'  D{i+1}: {info["area"]:.0f}m^2 | {info["n_wp"]} wps | '
               f'travel={info["t_travel"]:.1f}s  cover={info["t_coverage"]:.1f}s  '
               f'total={times[i]:.1f}s | alt={ALTITUDE:.0f}m')
     print(f'  {"─"*55}')

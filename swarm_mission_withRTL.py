@@ -36,12 +36,10 @@ POLL_HZ = 4
 #Drone connection strings
 DRONES: List[Tuple[int, str, int]] = [
     # (1-based index,  conn_str, sysid)
-    (1,  'udpin:0.0.0.1:14560',  1),
-    (2,  'udpin:0.0.0.1:14570',  2),
-    (3,  'udpin:0.0.0.0:14580',  3),
+    (1,  'udpin:0.0.0.0:14555',  1),
+    (2,  'udpin:0.0.0.0:14565',  2),
+    (3,  'udpin:0.0.0.0:14575',  3),
     ]
-
-
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  LOGGING
@@ -200,7 +198,7 @@ def is_armed(mav, timeout: float = 2.0) -> bool:
     if hb is None:
         return False
     return bool(hb.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED)
-
+    
 # ═══════════════════════════════════════════════════════════════════════════
 #  MISSION UPLOAD  (MISSION_ITEM_INT handshake)
 # ═══════════════════════════════════════════════════════════════════════════
@@ -473,26 +471,21 @@ def drone_thread(state: DroneState, all_states: List[DroneState],gps_barrier: th
     set_mode(mav, 4)
     time.sleep(0.5)
 
-    log.info(f"{tag} Arming …")
-    send_command_long(mav, mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,
-                      p1=1, p2=21196 if skip_prearm else 0)
-
     t0 = time.time()
     while True:
         if is_armed(mav):
             log.info(f"{tag} Armed !")
             break
         else:
-            log.info(f"{tag} Waiting for Arm !")
+            log.info(f"{tag} Waiting for GCS to arm...")
             time.sleep(0.5)
             continue
-    
 
-    # ── 7. Takeoff ───────────────────────────────────────────────────────────
+    # ── 7. Takeoff ───────────────────────────────────────────────────────────       
     log.info(f"{tag} Taking off to {TAKEOFF_ALT + state.index -1}m …")
     send_command_long(
         mav, mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,
-        p7=TAKEOFF_ALT + state.index -1,
+        p7=TAKEOFF_ALT + 2*(state.index -1),
     )
 
     t0 = time.time()
@@ -500,7 +493,7 @@ def drone_thread(state: DroneState, all_states: List[DroneState],gps_barrier: th
         pos = get_gps(mav, timeout=2)
         if pos:
             state.set_pos(*pos)
-            if pos[2] >= (TAKEOFF_ALT + state.index-1) * 0.95:
+            if pos[2] >= (TAKEOFF_ALT + 2*(state.index-1)) * 0.95:
                 log.info(f"{tag} Reached {pos[2]:.1f}m !")
                 break
         time.sleep(1.0 / POLL_HZ)
